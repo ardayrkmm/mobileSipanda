@@ -8,62 +8,60 @@ import 'package:mobilecapstone/pages/UpdateProfil.dart';
 import 'package:mobilecapstone/providers/LaporanP.dart';
 import 'package:mobilecapstone/providers/authP.dart';
 import 'package:mobilecapstone/widget/btnBaru.dart';
-import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Auth.mocks.mocks.dart';
 import 'http_overrides.dart';
-import 'lapor.mocks.mocks.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  late MockauthP auths;
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
-  setUp(() {
-    auths = MockauthP();
-    HttpOverrides.global = null;
+void main() {
+  setUpAll(() {
+    HttpOverrides.global = MyHttpOverrides();
+    SharedPreferences.setMockInitialValues({});
   });
 
   group("testing unit", () {
-    test('ketika user succes testing', () async {
-      when(auths.updateProfil(
-        any,
-        any,
-        any,
-        any,
-        any,
-      )).thenAnswer((_) async => {'status': 'success', 'message': 'Updated'});
+    test('ketika user sukses testing', () async {
+      final authProvider = authP();
 
-      final result = await auths.updateProfil(
-        1,
-        'arda',
-        'ardyrkm23@gmail.com',
-        '123456789',
+      final result = await authProvider.updateProfil(
+        9,
+        'Fajar wicaksono',
+        'fajarajah322@gmail.com',
+        '089665753965',
         null,
       );
 
+      print('Hasil respons: $result'); // Debug respons server
       expect(result['status'], 'success');
-      expect(result['message'], 'Updated');
+      expect(result['message'], 'Profil berhasil diperbarui!');
     });
-    test('ketika gagal dalam melakukan update profile', () async {
-      when(auths.updateProfil(
-        any,
-        any,
-        any,
-        any,
-        any,
-      )).thenAnswer((_) async => {'status': 'error', 'message': 'Failed'});
 
-      final result = await auths.updateProfil(
-        1,
-        'arda',
-        'ardyrkm23@gmail.com',
-        '123456789',
+    test('ketika gagal dalam melakukan update profile', () async {
+      final authProvider = authP();
+
+      // Simulasikan data yang salah untuk memastikan hasil error
+      final result = await authProvider.updateProfil(
+        null,
+        'Fajar wicaksono',
+        'fajarajah322@gmail.com',
+        '089665753965',
         null,
       );
 
       expect(result['status'], 'error');
-      expect(result['message'], 'Failed');
+      expect(result['message'],
+          'Failed to update profile: {"msg":"Invalid or missing user ID"}\n');
     });
   });
 
@@ -72,18 +70,23 @@ void main() {
         id: 11,
         nama: 'saipul',
         email: 'saipul22@gmail.com',
-        noTelp: 'ardaganteng',
+        noTelp: '123456789',
         imgProfil: "",
         password: "");
-    testWidgets('Updateprofil widget renders correctly',
-        (WidgetTester tester) async {
-      // Dumml
 
+    testWidgets('Inputan dalam halaman updateProfil',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Updateprofil(usr: user),
+        MultiProvider(
+          providers: [ChangeNotifierProvider(create: (_) => authP())],
+          child: MaterialApp(
+            home: Updateprofil(usr: user),
+          ),
         ),
       );
+
+      // Tunggu hingga widget selesai dirender sepenuhnya
+      await tester.pumpAndSettle();
 
       expect(find.text('Update Profil'), findsOneWidget);
       expect(find.text('Nama'), findsOneWidget);
@@ -91,6 +94,7 @@ void main() {
       expect(find.text('Telepon'), findsOneWidget);
 
       await tester.enterText(find.byType(TextField).first, 'Updated Name');
+      await tester.pumpAndSettle(); // Tunggu pembaruan selesai
       expect(find.text('Updated Name'), findsOneWidget);
     });
   });

@@ -31,7 +31,7 @@ class _MainpageState extends State<Mainpage> {
         usr: widget.usr,
       ),
       const HalamanScan(),
-      Profil(usr: widget.usr),
+      Profil(key: Key("halamanProfil"), usr: widget.usr),
       SentimentHalaman()
     ];
     Widget fl() {
@@ -93,6 +93,7 @@ class _MainpageState extends State<Mainpage> {
                   ),
                 ),
                 GestureDetector(
+                  key: Key("tombolProfil"),
                   onTap: () => pilihNav(2),
                   child: Container(
                     width: 24,

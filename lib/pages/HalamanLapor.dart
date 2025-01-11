@@ -7,7 +7,8 @@ import 'package:mobilecapstone/widget/errorPesan.dart';
 import 'package:provider/provider.dart';
 
 class ReportScreen extends StatelessWidget {
-  // String imgUrlH;
+  String imgUrlH;
+  ReportScreen({required this.imgUrlH});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +22,14 @@ class ReportScreen extends StatelessWidget {
         final laporans = Provider.of<Laporanp>(context, listen: false);
 
         LaporModel laporan = LaporModel(
-          id: "",
-          status: "sedang_di_proses",
-          namaLapor: nama.text,
-          nomerHp: nomerHP.text,
-          alamat: alamat.text,
-          keterangan: keterangan.text,
-          maps: "",
-        );
+            id: "",
+            status: "sedang_di_proses",
+            namaLapor: nama.text,
+            nomerHp: nomerHP.text,
+            alamat: alamat.text,
+            keterangan: keterangan.text,
+            maps: "",
+            gambar: imgUrlH);
 
         final hasil = await laporans.buatLaporan(laporan);
         if (hasil['success'] == true) {
@@ -79,20 +80,20 @@ class ReportScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Container(
-            //   width: double.infinity,
-            //   height: 150,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(10),
-            //   ),
-            //   child: isTestEnvironment
-            //       ? Placeholder(fallbackHeight: 100, fallbackWidth: 100)
-            //       : Image.network(
-            //           imgUrlH,
-            //           fit: BoxFit.cover,
-            //         ),
-            // ),
-            // SizedBox(height: 16),
+            Container(
+              width: double.infinity,
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: isTestEnvironment
+                  ? Placeholder(fallbackHeight: 100, fallbackWidth: 100)
+                  : Image.network(
+                      imgUrlH,
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            SizedBox(height: 16),
             TextField(
               controller: nama,
               decoration: InputDecoration(

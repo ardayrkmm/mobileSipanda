@@ -3,24 +3,25 @@ import 'package:mobilecapstone/pages/HalamanLapor.dart';
 import 'package:mobilecapstone/providers/LaporanP.dart';
 import 'package:provider/provider.dart';
 
-import 'lapor.mocks.mocks.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late MockLaporanp laporanProvider;
+  late Laporanp laporanProvider;
 
   setUp(() {
-    laporanProvider = MockLaporanp();
+    laporanProvider = Laporanp();
   });
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   testWidgets('Submit button triggers report creation',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      ChangeNotifierProvider<Laporanp>(
-        create: (_) => Laporanp(), // Sesuaikan dengan instansi yang benar
+      ChangeNotifierProvider(
+        create: (_) => laporanProvider,
         child: MaterialApp(
-          home: ReportScreen(),
+          home: ReportScreen(
+            imgUrlH: "ada",
+          ),
         ),
       ),
     );
@@ -35,7 +36,6 @@ void main() {
     await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
 
-    // Cek hasil
     expect(find.text('Berhasil'), findsNothing);
   });
 }

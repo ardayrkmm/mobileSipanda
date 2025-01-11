@@ -41,7 +41,7 @@ class Laporanp extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> buatLaporan(LaporModel lapor) async {
-    final url = Uri.parse('${Config.urlBase}/api/lapors');
+    final url = Uri.parse('${Config.urlBase}/api/lapor');
 
     try {
       // Ambil lokasi pengguna
@@ -49,14 +49,14 @@ class Laporanp extends ChangeNotifier {
 
       // Isi field maps dengan lokasi pengguna
       lapor = LaporModel(
-        id: lapor.id,
-        namaLapor: lapor.namaLapor,
-        nomerHp: lapor.nomerHp,
-        alamat: lapor.alamat,
-        maps: lokasi,
-        keterangan: lapor.keterangan,
-        status: lapor.status,
-      );
+          id: lapor.id,
+          namaLapor: lapor.namaLapor,
+          nomerHp: lapor.nomerHp,
+          alamat: lapor.alamat,
+          maps: lokasi,
+          keterangan: lapor.keterangan,
+          status: lapor.status,
+          gambar: lapor.gambar);
 
       final response = await http.post(
         url,

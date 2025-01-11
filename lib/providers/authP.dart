@@ -14,8 +14,7 @@ class authP extends ChangeNotifier {
   UserModel? get currentUser => _currentUser;
   String? get token => _token;
   bool get isLoading => _isLoading;
-  http.Client httpClient;
-  authP({http.Client? client}) : httpClient = client ?? http.Client();
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

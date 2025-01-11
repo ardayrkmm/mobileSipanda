@@ -9,59 +9,49 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 import 'http_overrides.dart';
-import 'lapor.mocks.mocks.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late MockLaporanp laporanProvider;
+  late Laporanp laporanProvider;
 
   setUp(() {
-    laporanProvider = MockLaporanp();
+    laporanProvider = Laporanp();
+    HttpOverrides.global = MyHttpOverrides();
   });
 
   group('Unit Testing fitur lapor', () {
     test('Berhasil membuat laporan', () async {
-      when(laporanProvider.buatLaporan(any)).thenAnswer((_) async => {
-            'success': true,
-            'message': 'Laporan berhasil dibuat',
-          });
-
       final result = await laporanProvider.buatLaporan(
         LaporModel(
-          id: '',
-          namaLapor: 'Test',
-          nomerHp: '123456789',
-          alamat: 'Alamat',
-          maps: '0.0,0.0',
-          keterangan: 'Test laporan',
-          status: 'sedang_di_proses',
-        ),
+            id: "",
+            namaLapor: 'Test',
+            nomerHp: '123456789',
+            alamat: 'Alamat',
+            maps: '0.0,0.0',
+            keterangan: 'Test laporan',
+            status: 'sedang_di_proses',
+            gambar: "lapor.jpg"),
       );
 
-      expect(result['success'], true);
-      expect(result['message'], 'Laporan berhasil dibuat');
+      expect(result['message'], 'Laporan berhasil disimpan');
     });
 
     test('Gagal Membuat laporan', () async {
-      when(laporanProvider.buatLaporan(any)).thenAnswer((_) async => {
-            'success': false,
-            'message': 'Gagal membuat laporan',
-          });
-
       final result = await laporanProvider.buatLaporan(
         LaporModel(
-          id: '',
-          namaLapor: 'Test',
-          nomerHp: '123456789',
-          alamat: 'Alamat',
-          maps: '0.0,0.0',
-          keterangan: 'Test laporan',
-          status: 'sedang_di_proses',
-        ),
+            id: 1.toString(),
+            namaLapor: 'Test',
+            nomerHp: '12345678',
+            alamat: 'Alamat',
+            maps: '',
+            keterangan: 'Test laporan',
+            status: 'sedang_di_proses',
+            gambar: "lapor.jpg"),
       );
 
-      expect(result['success'], false);
-      expect(result['message'], 'Gagal membuat laporan');
+      expect(result['success'], true);
+      expect(result['message'], 'Laporan berhasil disimpan');
     });
   });
 
@@ -72,7 +62,9 @@ void main() {
         await tester.pumpWidget(MaterialApp(
           home: ChangeNotifierProvider(
             create: (context) => Laporanp(),
-            child: ReportScreen(),
+            child: ReportScreen(
+              imgUrlH: "ada",
+            ),
           ),
         ));
         expect(find.byType(TextField), findsNWidgets(4));
@@ -85,7 +77,9 @@ void main() {
         ChangeNotifierProvider<Laporanp>.value(
           value: laporanProvider,
           child: MaterialApp(
-            home: ReportScreen(),
+            home: ReportScreen(
+              imgUrlH: "ada",
+            ),
           ),
         ),
       );

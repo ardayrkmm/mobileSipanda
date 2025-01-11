@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class Updateprofil extends StatefulWidget {
   final UserModel usr;
-  Updateprofil({super.key, required this.usr});
+  Updateprofil({Key? key, required this.usr}) : super(key: Key("halUpdate"));
 
   @override
   State<Updateprofil> createState() => _UpdateprofilState();
@@ -58,7 +58,10 @@ class _UpdateprofilState extends State<Updateprofil> {
       UserModel updatedUser = authProvider.currentUser!;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => Mainpage(usr: updatedUser),
+          builder: (context) => Mainpage(
+            key: Key("halamanMainpage"),
+            usr: updatedUser,
+          ),
         ),
         (route) => false,
       );
@@ -126,13 +129,14 @@ class _UpdateprofilState extends State<Updateprofil> {
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          inputField("Nama", nama),
-          inputField("Email", email),
-          inputField("Telepon", telp),
+          inputField("Nama", nama, "inputNama"),
+          inputField("Email", email, "inputEmail"),
+          inputField("Telepon", telp, "inputTelp"),
           SizedBox(height: 20),
           btnBaru(
             h: 44,
             w: double.infinity,
+            key: Key("tombolSimpan"),
             nama: "Simpan Perubahan",
             fn: update,
           ),
@@ -141,7 +145,8 @@ class _UpdateprofilState extends State<Updateprofil> {
     );
   }
 
-  Widget inputField(String label, TextEditingController controller) {
+  Widget inputField(
+      String label, TextEditingController controller, String namaKey) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -160,6 +165,7 @@ class _UpdateprofilState extends State<Updateprofil> {
             height: 44,
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
+              key: Key(namaKey),
               controller: controller,
               decoration: InputDecoration(
                 border: InputBorder.none,

@@ -8,51 +8,42 @@ import 'package:mobilecapstone/pages/chatbot.dart';
 import 'package:mobilecapstone/providers/chatbot.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
-import 'mocks.mocks.dart';
+
 import 'package:http/http.dart' as http;
 
 void main() {
   late chatbotProvider chatBotP;
-  late MockClient mockHttpClient;
+
   setUp(() {
-    mockHttpClient = MockClient();
     chatBotP = chatbotProvider();
-    chatBotP.httpClient = mockHttpClient;
   });
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   testWidgets("Penggunaan user menggunnakan fitur chatbot",
       (WidgetTester f) async {
-    when(mockHttpClient.post(
-      Uri.parse('${Config.urlBase}/api/chatbot/mobile'),
-      headers: anyNamed('headers'),
-      body: anyNamed('body'),
-    )).thenAnswer((_) async => http.Response(
-          jsonEncode({'response': ''}),
-          200,
-        ));
-
     await f.pumpWidget(
-      MaterialApp(
-        home: ChangeNotifierProvider(
-          create: (context) => chatBotP,
-          child: ChatBot(),
+      ChangeNotifierProvider(
+        create: (_) => chatBotP,
+        child: MaterialApp(
+          home: ChatBot(),
         ),
       ),
     );
 
-    await f.enterText(find.byType(TextFormField), 'sipanda yaitu');
-    await f.tap(find.byType(IconButton));
+    final Finder inputField = find.byType(TextFormField);
+    final Finder sendButton = find.byType(IconButton);
+
+    await f.enterText(inputField, 'makanan harimau sumatra');
     await f.pump();
 
-    expect(find.text('sipanda yaitu'), findsOneWidget);
-
-    chatBotP.addBotMessage(
-        'sipanda yaitu masyarakat lokal dalam menjaga keberagaman hayati dengan mengintegrasikan data dan mengidentifikasi spesies yang terancam punah. sekitar kawasan konserv');
+    await f.tap(sendButton);
     await f.pump();
 
+    expect(find.text('makanan harimau sumatra'), findsOneWidget);
+
+    await f.pump(Duration(seconds: 4));
     expect(
         find.text(
-            'sipanda yaitu masyarakat lokal dalam menjaga keberagaman hayati dengan mengintegrasikan data dan mengidentifikasi spesies yang terancam punah. sekitar kawasan konserv'),
+            'Harimau Sumatra memakan hewan besar dan juga kadang memakan hewan kecil seperti burung, monyet, dan kadal.'),
         findsOneWidget);
   });
 }

@@ -53,15 +53,16 @@ class _HalamanScanState extends State<HalamanScan> {
       final providS = await Provider.of<scanProvider>(context, listen: false);
       final hasil = await providS.tambahGambar(files);
       if (hasil['status'] == 'success') {
-        final imgUrl = hasil['url_gambar']; // URL gambar
-        final result = hasil['result']; // Hasil deteksi
-
+        final imgUrl = hasil['image_path']; // URL gambar
+        final result = hasil['predicted_label']; // Hasil deteksi
+        final speciesInfo = hasil['species_info'];
         // Navigasi ke halaman hasil dengan data gambar dan deteksi
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ScanPage(
               imgUrl: "${Config.urlBase}/${imgUrl}",
               status: result,
+              informasiHewan: speciesInfo,
             ),
           ),
         );

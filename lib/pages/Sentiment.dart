@@ -55,6 +55,7 @@ class SentimentHalaman extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => BerhasilFeed(),
                 ));
+                komen.clear();
               },
               nama: "Selanjutnya",
             )

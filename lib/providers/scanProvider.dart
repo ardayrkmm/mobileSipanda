@@ -11,8 +11,7 @@ class scanProvider extends ChangeNotifier {
 
   bool get loading => _cekloading;
   String? get hasil => _hasil;
-  http.Client httpClient;
-  scanProvider({http.Client? client}) : httpClient = client ?? http.Client();
+
   Future<Map<String, dynamic>> tambahGambar(File file) async {
     final url = Uri.parse('${Config.urlBase}/api/scan');
 
@@ -24,12 +23,13 @@ class scanProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responData = jsonDecode(response.body);
-
+        print("Parsed Response: $responData");
         notifyListeners();
         return {
           'status': "success",
-          'result': responData['result'],
-          'url_gambar': responData['url_gambar']
+          'predicted_label': responData['predicted_label'],
+          'image_path': responData['image_path'],
+          'species_info': responData['species_info'],
         };
       } else {
         final Map<String, dynamic> errorData = jsonDecode(response.body);

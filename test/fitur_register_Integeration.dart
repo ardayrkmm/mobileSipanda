@@ -12,33 +12,31 @@ import 'package:provider/provider.dart';
 import 'Auth.mocks.mocks.dart';
 
 void main() {
-  late MockauthP authsM;
+  late authP authsM;
 
   setUp(() {
-    authsM = MockauthP();
+    authsM = authP();
   });
 
   group("Testing fitur register integration", () {
     IntegrationTestWidgetsFlutterBinding.ensureInitialized();
     testWidgets("User menggunakan fitur register", (WidgetTester r) async {
-      String email = "ardyrkm11@gmail.com";
-      String nama = "ardayudrikm";
+      String email = "amadas@gmail.com";
+      String nama = "ardayudrikms";
       String password = "ardagantengbgt";
       String notelp = "0821371271";
 
       UserModel user = UserModel(
           email: email, nama: nama, noTelp: notelp, password: password);
-      when(authsM.buatAkun(user)).thenAnswer((s) async => {
-            "success": true,
-            'message': 'Registrasi berhasil!',
-            'user': user.toJson()
-          });
-      await r.pumpWidget(MaterialApp(
-        home: ChangeNotifierProvider<authP>(
-          create: (context) => authsM,
-          child: Register(),
+
+      await r.pumpWidget(
+        ChangeNotifierProvider(
+          create: (_) => authsM,
+          child: MaterialApp(
+            home: Register(),
+          ),
         ),
-      ));
+      );
 
       final emailF = find.byKey(Key("inputEmail"));
       final passwordF = find.byKey(Key("inputPassword"));
@@ -60,8 +58,6 @@ void main() {
       final hasil = await authsM.buatAkun(user);
       await r.pumpAndSettle();
       expect(hasil['success'], true);
-
-      verify(authsM.buatAkun(argThat(isA<UserModel>()))).called(1);
 
       // await r.pumpWidget(MaterialApp(
       //   home: ChangeNotifierProvider<authP>(

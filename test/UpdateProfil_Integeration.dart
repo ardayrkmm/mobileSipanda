@@ -1,92 +1,58 @@
-import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:mobilecapstone/main.dart' as app;
+
 import 'package:flutter/material.dart';
-import 'package:mobilecapstone/models/UserModel.dart';
-import 'package:mobilecapstone/pages/UpdateProfil.dart';
+import 'package:mobilecapstone/pages/Mainpage.dart';
+
 import 'package:mobilecapstone/pages/login.dart';
 import 'package:mobilecapstone/providers/authP.dart';
-import 'package:mockito/mockito.dart';
+
 import 'package:provider/provider.dart';
 
-import 'Auth.mocks.mocks.dart';
-import 'mocks.mocks.dart';
-
 void main() {
-  late MockauthP authsM;
-
+  late authP authsM;
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   setUp(() {
-    authsM = MockauthP();
-    HttpOverrides.global = null;
+    authsM = authP();
   });
-  testWidgets("User menggunakan fitur update profil",
-      (WidgetTester tester) async {
-    // Data dummy untuk user
-    final user = UserModel(
-        id: 1,
-        nama: "Arda Update",
-        email: "ardyrkm23@gmail.com",
-        noTelp: "08123456789",
-        imgProfil: null,
-        password: "");
+  testWidgets("User menggunakan fitur update profil", (WidgetTester r) async {
+    String email = "fajarajah322@gmail.com";
+    String password = "fajar320";
 
-    // Mock auth provider
-
-    // Mock behavior untuk fungsi updateProfil
-    when(authsM.updateProfil(
-      user.id,
-      "Arda Update Sukses",
-      "ardyrkm23@gmail.com",
-      "08123456789",
-      null,
-    )).thenAnswer((_) async => {
-          "status": "success",
-          "message": "Profil berhasil diperbarui!",
-        });
-
-    // Render widget UpdateProfil
-    await tester.pumpWidget(
-      MaterialApp(
-        home: ChangeNotifierProvider<authP>.value(
-          value: authsM,
-          child: Updateprofil(usr: user),
-        ),
+    await r.pumpWidget(MaterialApp(
+      home: ChangeNotifierProvider(
+        create: (context) => authsM,
+        child: Login(),
       ),
-    );
+    ));
 
-    // Temukan widget input dan tombol
-    final namaField = find.byKey(Key("inputNama"));
-    final emailField = find.byKey(Key("inputEmail"));
-    final telpField = find.byKey(Key("inputTelepon"));
-    final simpanButton = find.byKey(Key("tombolSimpan"));
+    final emailF = find.byKey(Key("inputEmail"));
+    final passwordF = find.byKey(Key("inputPassword"));
+    final btnLogin = find.byKey(Key("tombolLogin"));
 
-    // Pastikan semua widget ditemukan
-    expect(namaField, findsOneWidget);
-    expect(emailField, findsOneWidget);
-    expect(telpField, findsOneWidget);
-    expect(simpanButton, findsOneWidget);
+    expect(emailF, findsOneWidget);
+    expect(passwordF, findsOneWidget);
+    expect(btnLogin, findsOneWidget);
 
-    // Isi input fields dengan data baru
-    await tester.enterText(namaField, "Arda Update Sukses");
-    await tester.enterText(emailField, "ardyrkm23@gmail.com");
-    await tester.enterText(telpField, "08123456789");
+    await r.enterText(emailF, email);
+    await r.enterText(passwordF, password);
+    await r.tap(btnLogin);
 
-    // Simulasi tap tombol simpan
-    await tester.tap(simpanButton);
-    await tester.pumpAndSettle();
+    final hasil = await authsM.login(email, password);
+    print("Login result: $hasil");
+    expect(hasil?['success'], true, reason: "Login failed or returned null.");
+    await r.pumpAndSettle();
+    final mainPage = find.byKey(Key("halamanMainpage"));
+    expect(mainPage, findsOneWidget,
+        reason: "Failed to navigate to Main Page.");
 
-    // Verifikasi bahwa fungsi updateProfil dipanggil dengan argumen yang benar
-    verify(authsM.updateProfil(
-      user.id,
-      "Arda Update Sukses",
-      "ardyrkm23@gmail.com",
-      "08123456789",
-      null,
-    )).called(1);
-
-    // Pastikan kembali ke halaman utama setelah update
-    expect(find.byKey(Key("halamanMainpage")), findsOneWidget);
+    final btnProfil = find.byKey(Key("tombolProfil"));
+    expect(btnProfil, findsOneWidget);
+    await r.tap(btnProfil);
+    await r.pumpAndSettle();
+    final halUpdate = find.byKey(Key("halUpdate"));
+    expect(halUpdate, findsOneWidget);
+    await r.tap(halUpdate);
+    await r.pumpAndSettle();
   });
 }

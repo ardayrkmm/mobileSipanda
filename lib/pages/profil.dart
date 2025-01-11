@@ -49,6 +49,7 @@ class Profil extends StatelessWidget {
                       fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 GestureDetector(
+                  key: Key("halUpdate"),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Updateprofil(

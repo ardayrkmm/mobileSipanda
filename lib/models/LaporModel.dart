@@ -6,6 +6,7 @@ class LaporModel {
   final String maps;
   final String keterangan;
   final String status;
+  final String gambar;
 
   LaporModel({
     required this.id,
@@ -15,19 +16,20 @@ class LaporModel {
     required this.maps,
     required this.keterangan,
     required this.status,
+    required this.gambar,
   });
 
   // Konversi dari JSON ke Model
   factory LaporModel.fromJson(Map<String, dynamic> json) {
     return LaporModel(
-      id: json['id'],
-      namaLapor: json['nama_lapor'],
-      nomerHp: json['nomer_hp'],
-      alamat: json['alamat'],
-      maps: json['maps'],
-      keterangan: json['keterangan'],
-      status: json['status'],
-    );
+        id: json['id'],
+        namaLapor: json['nama_lapor'],
+        nomerHp: json['nomer_hp'],
+        alamat: json['alamat'],
+        maps: json['maps'],
+        keterangan: json['keterangan'],
+        status: json['status'],
+        gambar: json['file_url']);
   }
 
   // Konversi dari Model ke JSON
@@ -39,6 +41,7 @@ class LaporModel {
       'maps': maps,
       'keterangan': keterangan,
       'status': status,
+      'file_url': gambar
     };
   }
 }

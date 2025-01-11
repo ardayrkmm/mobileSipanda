@@ -8,8 +8,7 @@ class chatbotProvider extends ChangeNotifier {
   List<Map<String, dynamic>> _messages = [];
 
   List<Map<String, dynamic>> get messages => _messages;
-  http.Client httpClient;
-  chatbotProvider({http.Client? client}) : httpClient = client ?? http.Client();
+
   void addUserMessage(String message) {
     _messages.add({'text': message, 'bot': false});
     notifyListeners();
@@ -21,10 +20,9 @@ class chatbotProvider extends ChangeNotifier {
   }
 
   Future<void> sendMessage(String message) async {
-    final url = Uri.parse(
-        '${Config.urlBase}/api/chatbot/mobile'); // Ganti dengan URL backend Anda
+    final url = Uri.parse('${Config.urlBase}/api/chatbot/mobile');
     try {
-      final response = await httpClient.post(
+      final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'message': message}),
