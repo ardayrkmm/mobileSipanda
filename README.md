@@ -1,42 +1,42 @@
-# 🐼 Si Panda - Sistem Informasi Hewan Dilindungi
+# 🐼 Si Panda – Protected Wildlife Information System
 
-**Si Panda** adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu upaya pelestarian hewan yang dilindungi di seluruh Indonesia. Aplikasi ini menggabungkan teknologi pemetaan, pelaporan masyarakat, dan kecerdasan buatan (AI) untuk memberikan edukasi serta perlindungan bagi satwa langka.
-
----
-
-## ✨ Fitur Utama
-
-* **📍 Lokasi Terdekat**: Menampilkan titik lokasi habitat atau pusat konservasi hewan dilindungi di seluruh Indonesia berdasarkan posisi pengguna.
-* **🚨 Fitur Lapor**: Memungkinkan pengguna untuk melaporkan kejadian terkait hewan dilindungi (seperti perdagangan ilegal atau hewan terluka) langsung melalui aplikasi.
-* **🔍 Scan AI (CNN)**: Fitur identifikasi hewan menggunakan kamera. Jika pengguna tidak mengetahui jenis hewan yang ditemui, AI dengan model *Convolutional Neural Network* (CNN) akan mendeteksinya secara otomatis.
-* **📖 Edukasi Satwa**: Informasi lengkap mengenai status kelangkaan dan cara menjaga hewan-hewan endemik Indonesia.
+**Si Panda** is a Flutter-based mobile application designed to support the conservation of protected wildlife across Indonesia. The application integrates mapping technology, community reporting, and artificial intelligence (AI) to provide education and protection for endangered species.
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## ✨ Key Features
+
+* **📍 Nearest Locations**: Displays habitat locations or conservation centers for protected wildlife across Indonesia based on the user’s current position.
+* **🚨 Reporting Feature**: Allows users to report incidents related to protected animals (such as illegal trade or injured animals) directly through the application.
+* **🔍 AI Scan (CNN)**: An animal identification feature using the device camera. If users do not know the type of animal they encounter, AI powered by a *Convolutional Neural Network* (CNN) will automatically detect it.
+* **📖 Wildlife Education**: Comprehensive information about conservation status and ways to protect Indonesia’s endemic wildlife.
+
+---
+
+## 🛠️ Technologies Used
 
 * **Frontend**: [Flutter](https://flutter.dev/) (Cross-platform Mobile App)
-* **Backend**: [REST API](https://restfulapi.net/) (Sebagai jembatan data)
-* **Artificial Intelligence**: [CNN - Convolutional Neural Network](https://en.wikipedia.org/wiki/Convolutional_neural_network) (Untuk klasifikasi gambar hewan)
-* **Maps**: Google Maps API / Leaflet (Untuk fitur lokasi terdekat)
+* **Backend**: [REST API](https://restfulapi.net/) (Data integration layer)
+* **Artificial Intelligence**: [CNN – Convolutional Neural Network](https://en.wikipedia.org/wiki/Convolutional_neural_network) (For animal image classification)
+* **Maps**: Google Maps API / Leaflet (For nearest location features)
 
 ---
 
-## 🚀 Cara Menjalankan Aplikasi
+## 🚀 How to Run the Application
 
-1.  **Clone repository**:
+1. **Clone the repository**:
     ```bash
-    git clone [https://github.com/username-kamu/si-panda.git](https://github.com/username-kamu/si-panda.git)
+    git clone https://github.com/username-kamu/si-panda.git
     ```
-2.  **Masuk ke folder proyek**:
+2. **Navigate to the project folder**:
     ```bash
     cd si-panda
     ```
-3.  **Install dependencies**:
+3. **Install dependencies**:
     ```bash
     flutter pub get
     ```
-4.  **Jalankan aplikasi**:
+4. **Run the application**:
     ```bash
     flutter run
     ```
@@ -45,7 +45,7 @@
 
 ## 👥 Contributors
 
-Terima kasih kepada para pengembang yang telah berkontribusi dalam membangun aplikasi ini:
+Special thanks to the developers who contributed to building this application:
 
 <table>
   <tr>
@@ -66,14 +66,14 @@ Terima kasih kepada para pengembang yang telah berkontribusi dalam membangun apl
 
 ---
 
-## 🎯 Tujuan Pengembangan
+## 🎯 Development Objectives
 
-* Memberikan kemudahan akses informasi mengenai persebaran hewan dilindungi di Indonesia.
-* Membangun sistem pelaporan yang cepat dan tanggap untuk melindungi satwa dari ancaman.
-* Memanfaatkan teknologi AI untuk meningkatkan kesadaran masyarakat tentang jenis-jenis hewan langka.
+* Provide easy access to information about the distribution of protected wildlife in Indonesia.
+* Build a fast and responsive reporting system to protect wildlife from threats.
+* Leverage AI technology to increase public awareness of endangered species.
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dibuat untuk keperluan **edukasi dan pengembangan**. Penggunaan dan modifikasi diperbolehkan dengan mencantumkan sumber asli proyek ini.
+This project was created for **educational and development** purposes. Use and modification are permitted with proper attribution to the original project.
